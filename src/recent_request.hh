@@ -1,3 +1,6 @@
+#ifndef RECENT_REQUEST_H
+#define RECENT_REQUEST_H
+
 #include <stdint.h>
 
 #include "interface.hh"
@@ -15,8 +18,12 @@ typedef uint64_t Tag;
 class RecentRequest
 {
 private:
-    Tag rr_table_left[RR_SIZE];
-    Tag rr_table_right[RR_SIZE];
+    Tag     rr_table_left[RR_SIZE];
+    Tag     rr_table_right[RR_SIZE];
+
+    Addr    prev_addr;
+
+    void insert(Tag *rr_table, Addr addr);
 public:
     RecentRequest(/* args */);
     ~RecentRequest();
@@ -28,3 +35,5 @@ public:
 
     void reset();
 };
+
+#endif
