@@ -30,15 +30,30 @@ void BestOffset::reset() {
 
 int BestOffset::evaluate_scores() {
     /* Find the best score and set current offset to that */
-
+    int best_offset_index = 0;
+    for (int i = 1; i < NO_OFFSETS; i++) {
+        /* Here the comparison favours smaller offsets, change to strictly bigger in favour of big offsets */
+        if (offsets[i].score >= offsets[best_offset_index].score)
+            best_offset_index = i;
+    }
+    return (offsets[best_offset_index] > BAD_SCORE) ? offsets[best_offset_index].offset : -1;
 }
 
 int BestOffset::get_offset(Addr addr) {
-    if (!add_offset)
-        return 0;
     
-    if (++no_requests >= MAX_REQUESTS)
-        evaluate_scores();
+    if (++no_requests >= MAX_REQUESTS) {
+        /*
+        if ((current_offset = evaluate_scores()) == -1)
+            add_offset = false;
+        else
+            add_offset = true;*/
+
+        /* The following function and the if above do the same thing */
+        add_offset = ((current_offset = evaluate_scores()) == -1) ? false : true;
+        reset();
+    }
+
+    return (add_offset) ? current_offset : 0;
 }
 
 
