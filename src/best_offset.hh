@@ -1,5 +1,9 @@
+#ifndef BEST_OFFSET_H
+#define BEST_OFFSET_H
+
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <map>
 #include <algorithm>
 
@@ -16,7 +20,8 @@
 
 /*  This will create offsets with max value of 64, 
     where every number is on the form 2^i * 3^j * 5^k,
-    where i, j, k >= 0
+    whe
+    re i, j, k >= 0
 */
 #define NO_OFFSETS      27  
 
@@ -38,29 +43,55 @@ private:
     RecentRequest   recent_requests;
     
     uint16_t        no_requests;
-    const uint16_t  max_no_requests;
-
-    const uint8_t   max_score;
-    const uint8_t   good_score_limit;
-    const uint8_t   bad_score_limit;
 
     /* methods */
-    int reset();
+    /**
+     * @brief Resets the best-offset learning
+     * 
+     * Sets the no_requests to 0 and 
+     * resets all the scores in @a offsets
+     * 
+     */
+    void reset();
 
-    int test_offsets(Addr addr);
+    /**
+     * @brief Tests all the different offsets in the offsets list
+     * 
+     * @param addr The base address to test the offsets on.
+     * @return Returns true if one or more of the offsets have a score greater than the GOOD_SCORE value
+     */
+    bool test_offsets(Addr addr);
 
+    /**
+     * @brief Finds the best offset based on the score for each offset
+     * 
+     * @return Returns the best offset, unless the best offset is 0. Then the prefetcher should be off.
+     */
     int evaluate_scores();
 
+    /**
+     * @brief Internal method to calculate the offsets. Is run when object is created.
+     * 
+     */
     void init_offsets();
 
 public:
-    BestOffset(
-        uint8_t     bad_score_limit     = BAD_SCORE,
-        uint8_t     good_score_limit    = GOOD_SCORE, 
-        uint16_t    max_no_requests     = MAX_REQUESTS,
-        uint8_t     max_score           = MAX_SCORE
-    );
+    /**
+     * @brief Construct a new Best Offset object to calculate the best offsets for prefetching
+     * 
+     */
+    BestOffset();
     ~BestOffset();
 
+    /**
+     * @brief Get the best offset and trigger learning
+     * 
+     * @param addr The baseaddress of the data
+     * @return Returns the best offset, if it returns 0, you should not prefetch.
+     */
     int get_offset(Addr addr);
+
+    void insert_prefetched_line(Addr addr);
 };
+
+#endif
