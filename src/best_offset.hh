@@ -15,7 +15,7 @@
 
 #define MAX_SCORE       31
 #define GOOD_SCORE      25
-#define BAD_SCORE       5
+#define BAD_SCORE       1
 
 
 /*  This will create offsets with max value of 64, 
@@ -23,7 +23,7 @@
     whe
     re i, j, k >= 0
 */
-#define NO_OFFSETS      27  
+#define NO_OFFSETS      52/*27 gives max of 64 */  
 
 
 struct OffsetScore {

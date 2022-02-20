@@ -55,7 +55,7 @@ bool BestOffset::test_offsets(Addr addr) {
     for (int i = 0; i < NO_OFFSETS; i++) {
         if (recent_requests.is_recent(addr - offsets[i].offset * BLOCK_SIZE)) {
             /* Increment score of current tested offset */
-            if (++offsets[i].score >= GOOD_SCORE)
+            if (++offsets[i].score == MAX_SCORE)
                 found_good_offset = true;
                 //return offsets[i].offset;
             /* If offset score is bigger or equal to GOOD_SCORE, return the offset */
