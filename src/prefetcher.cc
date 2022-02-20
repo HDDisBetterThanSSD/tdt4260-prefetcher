@@ -5,27 +5,35 @@
  */
 
 #include "interface.hh"
+#include "best_offset.hh"
 
+BestOffset bo_pf;
 
 void prefetch_init(void)
 {
-    /* Called before any calls to prefetch_access. */
-    /* This is the place to initialize data structures. */
-
-    //DPRINTF(HWPrefetch, "Initialized sequential-on-access prefetcher\n");
+    bo_pf = BestOffset();
 }
 
 void prefetch_access(AccessStat stat)
 {
     /* pf_addr is now an address within the _next_ cache block */
-    Addr pf_addr = stat.mem_addr + BLOCK_SIZE;
+    //Addr pf_addr = stat.mem_addr + BLOCK_SIZE;
 
     /*
      * Issue a prefetch request if a demand miss occured,
      * and the block is not already in cache.
      */
-    if (stat.miss && !in_cache(pf_addr)) {
-        issue_prefetch(pf_addr);
+    //if (stat.miss && !in_cache(pf_addr)) {
+        //issue_prefetch(pf_addr);
+    //}
+
+    Addr pf_offset = bo_pf.get_offset(stat.mem_addr);
+
+    if (pf_offset) {
+        //Addr pf_addr = stat.mem_addr + pf_offset * BLOCK_SIZE;
+        //if (pf_addr <= MAX_PHYS_MEM_ADDR)
+        
+        issue_prefetch(stat.mem_addr + pf_offset * BLOCK_SIZE);
     }
 }
 
@@ -33,4 +41,5 @@ void prefetch_complete(Addr addr) {
     /*
      * Called when a block requested by the prefetcher has been loaded.
      */
+    bo_pf.insert_prefetched_line(addr);
 }
