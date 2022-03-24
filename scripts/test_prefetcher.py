@@ -64,18 +64,18 @@ pf_stats.update(stats.build_stats(homeDir + '/output'))
 
 # Write statistics
 stats_file = open(homeDir + '/stats.txt', 'w')
-def save_stats(pf, test, echo):
-    table = stats.format_stats(pf_stats, pf, test)
+def save_stats(pf, test, echo, _type='text'):
+    table = stats.format_stats(pf_stats, pf, test, _type)
     stats_file.write(table)
     if echo:
         print table
 
 # Prefetcher comparison for each test
 for test in sorted(pf_stats['user']):
-    save_stats('all', test, False)
+    save_stats('all', test, False, 'html')
 # User prefetcher results.
-save_stats('user', 'all', True)
+save_stats('user', 'all', True, 'html')
 # Summary
-save_stats('all', 'all', True)
+save_stats('all', 'all', True, 'html')
 
 stats_file.close()
