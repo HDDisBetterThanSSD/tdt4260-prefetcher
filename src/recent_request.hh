@@ -5,8 +5,8 @@
 
 #include "interface.hh"
 
-#define BLOCK_SIZE_BITS 6
-#define RR_SIZE_BITS    8
+#define BLOCK_SIZE_BITS 6                   /* This is bits to represent the BLOCKSIZE from interface.hh */
+#define RR_SIZE_BITS    6
 #define RR_SIZE         (1 << RR_SIZE_BITS)
 #define INDEX_MASK      (RR_SIZE - 1)
 
