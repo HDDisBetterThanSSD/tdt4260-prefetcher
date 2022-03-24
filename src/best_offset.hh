@@ -10,7 +10,7 @@
 #include "interface.hh"
 #include "recent_request.hh"
 
-#define MAX_REQUESTS    100
+#define MAX_REQUESTS    64
 
 
 #define MAX_SCORE       31
@@ -20,10 +20,9 @@
 
 /*  This will create offsets with max value of 64, 
     where every number is on the form 2^i * 3^j * 5^k,
-    whe
-    re i, j, k >= 0
+    where i, j, k >= 0
 */
-#define NO_OFFSETS      52/*27 gives max of 64 */  
+#define NO_OFFSETS      52/*27 gives max of 64 */  /*52 gives max of 256 */
 
 
 struct OffsetScore {
@@ -81,7 +80,6 @@ public:
      * 
      */
     BestOffset();
-    ~BestOffset();
 
     /**
      * @brief Get the best offset and trigger learning

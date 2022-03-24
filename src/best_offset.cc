@@ -5,9 +5,6 @@ BestOffset::BestOffset() : current_offset(1), add_offset(true), no_requests(0) {
     reset();
 }
 
-BestOffset::~BestOffset()
-{
-}
 
 void BestOffset::reset() {
     no_requests = 0;
@@ -58,8 +55,6 @@ bool BestOffset::test_offsets(Addr addr) {
             if (++offsets[i].score == MAX_SCORE)
                 found_good_offset = true;
                 //return offsets[i].offset;
-            /* If offset score is bigger or equal to GOOD_SCORE, return the offset */
-
         }
     }
     /* else return 0 */
